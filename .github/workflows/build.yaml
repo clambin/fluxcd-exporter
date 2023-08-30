@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - metrics
+    paths-ignore:
+      - 'assets/**'
+
+jobs:
+  test:
+    uses: clambin/workflows/.github/workflows/test.yaml@main
+  build:
+    needs:
+      - test
+    uses: clambin/workflows/.github/workflows/build.yaml@main
+    with:
+      target: fluxcd-exporter

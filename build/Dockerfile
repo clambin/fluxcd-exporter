@@ -1,0 +1,12 @@
+FROM alpine
+
+WORKDIR /app
+
+ARG TARGETOS
+ARG TARGETARCH
+
+COPY bld/mediamon-$TARGETOS-$TARGETARCH /app/mediamon
+
+EXPOSE 8080
+ENTRYPOINT ["/app/fluxcd-exporter"]
+CMD []

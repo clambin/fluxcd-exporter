@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  test:
+    uses: clambin/workflows/.github/workflows/test.yaml@main
+  build:
+    needs:
+      - test
+    uses: clambin/workflows/.github/workflows/build.yaml@main
+    with:
+      target: fluxcd-exporter
+  release:
+    needs:
+      - build
+    uses: clambin/workflows/.github/workflows/release.yaml@main
+
