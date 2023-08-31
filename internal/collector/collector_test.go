@@ -26,7 +26,8 @@ func TestCollector_Collect(t *testing.T) {
 					}}, nil
 				})
 			},
-		}}
+		},
+	}
 
 	r := prometheus.NewPedanticRegistry()
 	r.MustRegister(c)
