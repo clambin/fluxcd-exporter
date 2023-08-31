@@ -1,4 +1,4 @@
-module fluxcd-exporter
+module github.com/clambin/fluxcd-exporter
 
 go 1.21
 

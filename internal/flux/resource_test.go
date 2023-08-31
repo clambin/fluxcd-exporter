@@ -1,31 +1,34 @@
 package flux
 
 import (
+	"bytes"
 	"github.com/stretchr/testify/assert"
+	"log/slog"
 	"testing"
 )
 
-func TestResources_String(t *testing.T) {
-	resources := Resources{
-		{
-			Name:      "foo",
-			Namespace: "bar",
-			Kind:      "Kustomization",
-			Conditions: map[string]string{
-				"ready": "True",
-			},
-		},
-		{
-			Name:      "snafu",
-			Namespace: "foobar",
-			Kind:      "GitRepository",
-			Conditions: map[string]string{
-				"ready":             "False",
-				"artifactinstorage": "True",
-			},
-		},
-	}
+func TestResource_LogValue(t *testing.T) {
+	out := bytes.NewBufferString("")
+	opt := slog.HandlerOptions{ReplaceAttr: func(_ []string, a slog.Attr) slog.Attr {
+		// Remove time from the output for predictable test output.
+		if a.Key == slog.TimeKey {
+			return slog.Attr{}
+		}
+		return a
+	}}
+	l := slog.New(slog.NewJSONHandler(out, &opt))
 
-	assert.Equal(t, `gotk_resource_info{name="foo", namespace="bar", kind="Kustomization", ready="True"}
-gotk_resource_info{name="snafu", namespace="foobar", kind="GitRepository", artifactinstorage="True", ready="False"}`, resources.String())
+	l.Info("resource found", "resource", Resource{
+		Kind:      "HelmRelease",
+		Namespace: "default",
+		Name:      "foo",
+		Conditions: map[string]string{
+			"ready":    "False",
+			"released": "True",
+		},
+	})
+
+	assert.Equal(t, `{"level":"INFO","msg":"resource found","resource":{"kind":"HelmRelease","namespace":"default","name":"foo","conditions":{"ready":"False","released":"True"}}}
+`, out.String())
+
 }

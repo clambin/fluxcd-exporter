@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"flag"
-	"fluxcd-exporter/internal/collector"
+	"github.com/clambin/fluxcd-exporter/internal/collector"
 	"github.com/go-logr/logr"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -23,7 +23,7 @@ func main() {
 	if *debug {
 		opts.Level = slog.LevelDebug
 	}
-	logger := slog.New(slog.NewTextHandler(os.Stderr, &opts))
+	logger := slog.New(slog.NewJSONHandler(os.Stderr, &opts))
 
 	l := logr.New(log.NullLogSink{})
 	log.SetLogger(l)

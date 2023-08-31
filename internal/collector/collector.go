@@ -2,7 +2,7 @@ package collector
 
 import (
 	"context"
-	"fluxcd-exporter/internal/flux"
+	"github.com/clambin/fluxcd-exporter/internal/flux"
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/client-go/rest"
 	"log/slog"
@@ -55,10 +55,11 @@ func (c Collector) getResources(l flux.Lister, ch chan<- prometheus.Metric) {
 	fluxResources, err := l.List(context.Background())
 	if err != nil {
 		c.Logger.Error("failed to get flux metrics", "err", err)
-		ch <- prometheus.NewInvalidMetric(prometheus.NewDesc("fluxmon_error", "Error getting custom resource status", nil, nil), err)
+		ch <- prometheus.NewInvalidMetric(prometheus.NewDesc("fluxcd_exporter_error", "Error getting custom resource status", nil, nil), err)
 		return
 	}
 	for _, fluxResource := range fluxResources {
+		c.Logger.Debug("resource found", "resource", fluxResource)
 		ch <- prometheus.MustNewConstMetric(resourceInfoMetric, prometheus.GaugeValue, 1.0,
 			fluxResource.Name,
 			fluxResource.Namespace,

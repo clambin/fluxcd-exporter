@@ -17,7 +17,7 @@ func GitRepositories(cfg *rest.Config) Lister {
 
 func getGitRepositories(ctx context.Context, c client.Client) (Resources, error) {
 	var fluxResources Resources
-	opts := client.ListOptions{Namespace: ""}
+	var opts client.ListOptions
 
 	for {
 		var resources fluxSourceV1.GitRepositoryList

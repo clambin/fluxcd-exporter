@@ -3,8 +3,8 @@ package collector
 import (
 	"bytes"
 	"context"
-	"fluxcd-exporter/internal/flux"
 	"fmt"
+	"github.com/clambin/fluxcd-exporter/internal/flux"
 	"github.com/prometheus/client_golang/prometheus/testutil"
 	"github.com/stretchr/testify/assert"
 	"k8s.io/client-go/rest"
