@@ -15,9 +15,9 @@ func HelmRepositories(cfg *rest.Config) Lister {
 	}
 }
 
-func getHelmRepositories(ctx context.Context, c client.Client) (Resources, error) {
-	var fluxResources Resources
-	opts := client.ListOptions{Namespace: ""}
+func getHelmRepositories(ctx context.Context, c client.Client) ([]Resource, error) {
+	var fluxResources []Resource
+	var opts client.ListOptions
 
 	for {
 		var resources fluxSourceV1Beta2.HelmRepositoryList

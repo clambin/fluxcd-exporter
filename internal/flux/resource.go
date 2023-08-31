@@ -3,6 +3,7 @@ package flux
 import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"log/slog"
+	"slices"
 	"strings"
 )
 
@@ -12,8 +13,6 @@ type Resource struct {
 	Kind       string
 	Conditions map[string]string
 }
-
-type Resources []Resource
 
 func newResource(name, namespace, kind string, conditions []v1.Condition) Resource {
 	cond := make(map[string]string)
@@ -29,10 +28,17 @@ func newResource(name, namespace, kind string, conditions []v1.Condition) Resour
 }
 
 func (r Resource) LogValue() slog.Value {
-	var grp []any
-	for key, val := range r.Conditions {
-		grp = append(grp, slog.String(key, val))
+	conditions := make([]string, 0, len(r.Conditions))
+	for key := range r.Conditions {
+		conditions = append(conditions, key)
 	}
+	slices.Sort(conditions)
+
+	grp := make([]any, len(conditions))
+	for index, key := range conditions {
+		grp[index] = slog.String(key, r.Conditions[key])
+	}
+
 	return slog.GroupValue(
 		slog.String("kind", r.Kind),
 		slog.String("namespace", r.Namespace),

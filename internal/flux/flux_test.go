@@ -11,5 +11,5 @@ type testCase struct {
 	schemeBuilder *scheme.Builder
 	objects       []runtime.Object
 	wantErr       assert.ErrorAssertionFunc
-	want          Resources
+	want          []Resource
 }

@@ -15,8 +15,8 @@ func GitRepositories(cfg *rest.Config) Lister {
 	}
 }
 
-func getGitRepositories(ctx context.Context, c client.Client) (Resources, error) {
-	var fluxResources Resources
+func getGitRepositories(ctx context.Context, c client.Client) ([]Resource, error) {
+	var fluxResources []Resource
 	var opts client.ListOptions
 
 	for {

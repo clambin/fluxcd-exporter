@@ -35,7 +35,7 @@ func TestHelmReleases(t *testing.T) {
 				},
 			},
 			wantErr: assert.NoError,
-			want: Resources{{
+			want: []Resource{{
 				Name:      "foo",
 				Namespace: "bar",
 				Kind:      "HelmRelease",
@@ -48,7 +48,7 @@ func TestHelmReleases(t *testing.T) {
 			name:          "empty",
 			schemeBuilder: v2beta1.SchemeBuilder,
 			wantErr:       assert.NoError,
-			want:          Resources(nil),
+			want:          []Resource(nil),
 		},
 		{
 			name:          "error",

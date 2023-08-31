@@ -15,9 +15,9 @@ func Buckets(cfg *rest.Config) Lister {
 	}
 }
 
-func getBuckets(ctx context.Context, c client.Client) (Resources, error) {
-	var fluxResources Resources
-	opts := client.ListOptions{Namespace: ""}
+func getBuckets(ctx context.Context, c client.Client) ([]Resource, error) {
+	var fluxResources []Resource
+	var opts client.ListOptions
 
 	for {
 		var resources fluxSourceV1Beta2.BucketList

@@ -35,7 +35,7 @@ func TestGitRepositories(t *testing.T) {
 				},
 			},
 			wantErr: assert.NoError,
-			want: Resources{{
+			want: []Resource{{
 				Name:      "foo",
 				Namespace: "bar",
 				Kind:      "GitRepository",
@@ -48,7 +48,7 @@ func TestGitRepositories(t *testing.T) {
 			name:          "empty",
 			schemeBuilder: fluxSourceV1.SchemeBuilder,
 			wantErr:       assert.NoError,
-			want:          Resources(nil),
+			want:          []Resource(nil),
 		},
 		{
 			name:          "error",

@@ -15,9 +15,9 @@ func Kustomizations(cfg *rest.Config) Lister {
 	}
 }
 
-func getKustomizations(ctx context.Context, c client.Client) (Resources, error) {
-	var fluxResources Resources
-	opts := client.ListOptions{}
+func getKustomizations(ctx context.Context, c client.Client) ([]Resource, error) {
+	var fluxResources []Resource
+	var opts client.ListOptions
 
 	for {
 		var resources fluxKustomizeV1.KustomizationList

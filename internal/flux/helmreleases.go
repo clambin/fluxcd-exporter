@@ -15,9 +15,9 @@ func HelmReleases(cfg *rest.Config) Lister {
 	}
 }
 
-func getHelmReleases(ctx context.Context, c client.Client) (Resources, error) {
-	var fluxResources Resources
-	opts := client.ListOptions{Namespace: ""}
+func getHelmReleases(ctx context.Context, c client.Client) ([]Resource, error) {
+	var fluxResources []Resource
+	var opts client.ListOptions
 
 	for {
 		var resources fluxHelmV2Beta1.HelmReleaseList

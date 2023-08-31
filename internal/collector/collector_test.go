@@ -21,8 +21,8 @@ func TestCollector_Collect(t *testing.T) {
 	}{
 		{
 			name: "valid",
-			lister: func(ctx context.Context) (flux.Resources, error) {
-				return flux.Resources{{
+			lister: func(ctx context.Context) ([]flux.Resource, error) {
+				return []flux.Resource{{
 					Name:       "foo",
 					Namespace:  "bar",
 					Kind:       "snafu",
@@ -38,7 +38,7 @@ gotk_resource_info{customresource_kind="snafu",exported_namespace="bar",name="fo
 		},
 		{
 			name: "error",
-			lister: func(ctx context.Context) (flux.Resources, error) {
+			lister: func(ctx context.Context) ([]flux.Resource, error) {
 				return nil, fmt.Errorf("failed")
 			},
 			wantErr: assert.Error,

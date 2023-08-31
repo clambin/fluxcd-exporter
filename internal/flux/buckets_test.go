@@ -27,7 +27,7 @@ func TestBuckets(t *testing.T) {
 				},
 			},
 			wantErr: assert.NoError,
-			want: Resources{{
+			want: []Resource{{
 				Name:      "foo",
 				Namespace: "bar",
 				Kind:      "Bucket",
@@ -40,7 +40,7 @@ func TestBuckets(t *testing.T) {
 			name:          "empty",
 			schemeBuilder: fluxSourceV1Beta2.SchemeBuilder,
 			wantErr:       assert.NoError,
-			want:          Resources(nil),
+			want:          []Resource(nil),
 		},
 		{
 			name:          "error",

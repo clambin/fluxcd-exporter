@@ -9,21 +9,21 @@ import (
 )
 
 type Lister interface {
-	List(ctx context.Context) (Resources, error)
+	List(ctx context.Context) ([]Resource, error)
 }
 
-type ListerFunc func(ctx context.Context) (Resources, error)
+type ListerFunc func(ctx context.Context) ([]Resource, error)
 
-func (l ListerFunc) List(ctx context.Context) (Resources, error) {
+func (l ListerFunc) List(ctx context.Context) ([]Resource, error) {
 	return l(ctx)
 }
 
 type lister struct {
 	client client.Client
-	list   func(context.Context, client.Client) (Resources, error)
+	list   func(context.Context, client.Client) ([]Resource, error)
 }
 
-func (l lister) List(ctx context.Context) (Resources, error) {
+func (l lister) List(ctx context.Context) ([]Resource, error) {
 	return l.list(ctx, l.client)
 }
 
