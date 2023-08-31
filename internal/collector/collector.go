@@ -3,10 +3,10 @@ package collector
 import (
 	"context"
 	"fluxcd-exporter/internal/flux"
-	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/client-go/rest"
 	"log/slog"
+	"sync"
 )
 
 var resourceInfoMetric = prometheus.NewDesc(
@@ -35,10 +35,27 @@ func (c Collector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c Collector) Collect(ch chan<- prometheus.Metric) {
-	fluxResources, err := c.getResources()
+	listers := c.listers
+	if listers == nil {
+		listers = defaultListers
+	}
+
+	var wg sync.WaitGroup
+	for _, lister := range listers {
+		wg.Add(1)
+		go func(lister func(config *rest.Config) flux.Lister) {
+			defer wg.Done()
+			c.getResources(lister(c.Config), ch)
+		}(lister)
+	}
+	wg.Wait()
+}
+
+func (c Collector) getResources(l flux.Lister, ch chan<- prometheus.Metric) {
+	fluxResources, err := l.List(context.Background())
 	if err != nil {
+		c.Logger.Error("failed to get flux metrics", "err", err)
 		ch <- prometheus.NewInvalidMetric(prometheus.NewDesc("fluxmon_error", "Error getting custom resource status", nil, nil), err)
-		c.Logger.Error("failed to get resource status", "err", err)
 		return
 	}
 	for _, fluxResource := range fluxResources {
@@ -49,21 +66,4 @@ func (c Collector) Collect(ch chan<- prometheus.Metric) {
 			fluxResource.Conditions["ready"],
 		)
 	}
-}
-
-func (c Collector) getResources() (flux.Resources, error) {
-	var fluxResources flux.Resources
-
-	listers := c.listers
-	if listers == nil {
-		listers = defaultListers
-	}
-	for _, lister := range listers {
-		resources, err := lister(c.Config).List(context.Background())
-		if err != nil {
-			return nil, fmt.Errorf("flux: %w", err)
-		}
-		fluxResources = append(fluxResources, resources...)
-	}
-	return fluxResources, nil
 }
