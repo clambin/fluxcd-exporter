@@ -12,7 +12,7 @@ import (
 var resourceInfoMetric = prometheus.NewDesc(
 	prometheus.BuildFQName("gotk", "resource", "info"),
 	"TODO",
-	[]string{"name", "namespace", "kind", "ready"},
+	[]string{"name", "exported_namespace", "customresource_kind", "ready"},
 	nil,
 )
 
@@ -54,12 +54,12 @@ func (c Collector) Collect(ch chan<- prometheus.Metric) {
 func (c Collector) getResources() (flux.Resources, error) {
 	var fluxResources flux.Resources
 
-	l := c.listers
-	if l == nil {
-		l = defaultListers
+	listers := c.listers
+	if listers == nil {
+		listers = defaultListers
 	}
-	for _, collector := range l {
-		resources, err := collector(c.Config).List(context.Background())
+	for _, lister := range listers {
+		resources, err := lister(c.Config).List(context.Background())
 		if err != nil {
 			return nil, fmt.Errorf("flux: %w", err)
 		}

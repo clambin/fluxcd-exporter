@@ -34,6 +34,6 @@ func TestCollector_Collect(t *testing.T) {
 	assert.NoError(t, testutil.GatherAndCompare(r, bytes.NewBufferString(`
 # HELP gotk_resource_info TODO
 # TYPE gotk_resource_info gauge
-gotk_resource_info{kind="snafu",name="foo",namespace="bar",ready="False"} 1
+gotk_resource_info{customresource_kind="snafu",exported_namespace="bar",name="foo",ready="False"} 1
 `)))
 }
