@@ -1,7 +1,7 @@
 # fluxcd-exporter
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/clambin/fluxcd-exporter?color=green&label=Release&style=plastic)
 ![Codecov](https://img.shields.io/codecov/c/gh/clambin/fluxcd-exporter?style=plastic)
-![Build](https://github.com/clambin/mediamon/workflows/Build/badge.svg)
+![Build](https://github.com/clambin/fluxcd-exporter/workflows/Build/badge.svg)
 ![Go Report Card](https://goreportcard.com/badge/github.com/clambin/fluxcd-exporter)
 ![GitHub](https://img.shields.io/github/license/clambin/fluxcd-exporter?style=plastic)
 
