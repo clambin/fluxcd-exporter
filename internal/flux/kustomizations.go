@@ -27,14 +27,15 @@ func getKustomizations(ctx context.Context, c client.Client) ([]Resource, error)
 
 		for _, resource := range resources.Items {
 			fluxResources = append(fluxResources, newResource(
-				resource.Name,
-				resource.Namespace,
+				resource.ObjectMeta.GetName(),
+				resource.ObjectMeta.GetNamespace(),
 				resource.TypeMeta.Kind,
 				resource.GetConditions(),
 			))
 		}
 
-		if resources.RemainingItemCount == nil || *resources.RemainingItemCount == 0 {
+		remaining := resources.GetRemainingItemCount()
+		if remaining == nil || *remaining == 0 {
 			break
 		}
 		opts.Continue = resources.Continue

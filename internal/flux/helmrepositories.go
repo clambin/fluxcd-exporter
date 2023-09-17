@@ -27,9 +27,9 @@ func getHelmRepositories(ctx context.Context, c client.Client) ([]Resource, erro
 
 		for _, resource := range resources.Items {
 			fluxResources = append(fluxResources, newResource(
-				resource.Name,
-				resource.Namespace,
-				resource.Kind,
+				resource.ObjectMeta.GetName(),
+				resource.ObjectMeta.GetNamespace(),
+				resource.TypeMeta.Kind,
 				resource.GetConditions(),
 			))
 		}

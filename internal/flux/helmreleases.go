@@ -29,8 +29,8 @@ func getHelmReleases(ctx context.Context, c client.Client) ([]Resource, error) {
 
 		for _, resource := range resources.Items {
 			fluxResources = append(fluxResources, newResource(
-				resource.GetName(),
-				resource.GetNamespace(),
+				resource.ObjectMeta.GetName(),
+				resource.ObjectMeta.GetNamespace(),
 				resource.TypeMeta.Kind,
 				resource.GetConditions(),
 			))
