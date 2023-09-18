@@ -50,8 +50,8 @@ gotk_resource_info{customresource_kind="snafu",exported_namespace="bar",name="fo
 		t.Run(tt.name, func(t *testing.T) {
 			c := Collector{
 				Logger: slog.Default(),
-				listers: []func(config *rest.Config) flux.Lister{
-					func(config *rest.Config) flux.Lister {
+				listers: []func(config *rest.Config, logger *slog.Logger) flux.Lister{
+					func(config *rest.Config, _ *slog.Logger) flux.Lister {
 						return tt.lister
 					},
 				},

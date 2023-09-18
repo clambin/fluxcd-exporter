@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"log/slog"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 	"testing"
@@ -63,7 +64,7 @@ func TestKustomizations(t *testing.T) {
 			require.NoError(t, err)
 
 			c := fake.NewClientBuilder().WithScheme(schema).WithRuntimeObjects(tt.objects...).Build()
-			k := lister{client: c, list: getKustomizations}
+			k := lister{client: c, list: getKustomizations, logger: slog.Default()}
 
 			resources, err := k.List(context.Background())
 			tt.wantErr(t, err)
