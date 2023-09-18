@@ -1,6 +1,7 @@
 package flux
 
 import (
+	"cmp"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"log/slog"
 	"slices"
@@ -28,21 +29,24 @@ func newResource(name, namespace, kind string, conditions []v1.Condition) Resour
 }
 
 func (r Resource) LogValue() slog.Value {
-	conditions := make([]string, 0, len(r.Conditions))
-	for key := range r.Conditions {
-		conditions = append(conditions, key)
-	}
-	slices.Sort(conditions)
-
-	grp := make([]any, len(conditions))
-	for index, key := range conditions {
-		grp[index] = slog.String(key, r.Conditions[key])
-	}
-
 	return slog.GroupValue(
 		slog.String("kind", r.Kind),
 		slog.String("namespace", r.Namespace),
 		slog.String("name", r.Name),
-		slog.Group("conditions", grp...),
+		slog.Group("conditions", logConditions(r.Conditions)...),
 	)
+}
+
+func logConditions(conditions map[string]string) []any {
+	attribs := make([]any, 0, len(conditions))
+
+	for key, val := range conditions {
+		attribs = append(attribs, slog.String(key, val))
+	}
+
+	slices.SortFunc(attribs, func(a, b any) int {
+		return cmp.Compare(a.(slog.Attr).Key, b.(slog.Attr).Key)
+	})
+
+	return attribs
 }

@@ -32,3 +32,22 @@ func TestResource_LogValue(t *testing.T) {
 `, out.String())
 
 }
+
+func BenchmarkResource_LogValue(b *testing.B) {
+	r := Resource{
+		Kind:      "HelmRelease",
+		Namespace: "default",
+		Name:      "foo",
+		Conditions: map[string]string{
+			"ready":    "False",
+			"released": "True",
+		},
+	}
+
+	for i := 0; i < b.N; i++ {
+		v := r.LogValue()
+		if len(v.Group()) != 4 {
+			b.Fail()
+		}
+	}
+}
