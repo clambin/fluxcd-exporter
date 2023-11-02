@@ -4,7 +4,7 @@ import (
 	"errors"
 	"flag"
 	"github.com/clambin/fluxcd-exporter/internal/collector"
-	"github.com/go-logr/logr"
+	"github.com/go-logr/logr/slogr"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log/slog"
@@ -25,8 +25,7 @@ func main() {
 	}
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, &opts))
 
-	l := logr.New(log.NullLogSink{})
-	log.SetLogger(l)
+	log.SetLogger(slogr.NewLogr(logger.Handler()))
 
 	c := collector.Collector{
 		Config: config.GetConfigOrDie(),
