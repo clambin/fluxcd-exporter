@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/fluxcd/helm-controller/api v0.36.2
 	github.com/fluxcd/kustomize-controller/api v1.1.1
-	github.com/fluxcd/source-controller/api v1.2.0
+	github.com/fluxcd/source-controller/api v1.2.1
 	github.com/go-logr/logr v1.3.0
 	github.com/prometheus/client_golang v1.17.0
 	github.com/stretchr/testify v1.8.4
