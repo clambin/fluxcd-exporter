@@ -33,20 +33,18 @@ func (r Resource) LogValue() slog.Value {
 		slog.String("kind", r.Kind),
 		slog.String("namespace", r.Namespace),
 		slog.String("name", r.Name),
-		slog.Group("conditions", logConditions(r.Conditions)...),
+		slog.Any("conditions", logConditions(r.Conditions)),
 	)
 }
 
-func logConditions(conditions map[string]string) []any {
-	attribs := make([]any, 0, len(conditions))
+func logConditions(conditions map[string]string) []slog.Attr {
+	attribs := make([]slog.Attr, 0, len(conditions))
 
 	for key, val := range conditions {
 		attribs = append(attribs, slog.String(key, val))
 	}
 
-	slices.SortFunc(attribs, func(a, b any) int {
-		return cmp.Compare(a.(slog.Attr).Key, b.(slog.Attr).Key)
-	})
+	slices.SortFunc(attribs, func(a, b slog.Attr) int { return cmp.Compare(a.Key, b.Key) })
 
 	return attribs
 }
