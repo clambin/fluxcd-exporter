@@ -14,7 +14,7 @@ import (
 )
 
 func TestBuckets(t *testing.T) {
-	testCases := []testCase{
+	tests := []testCase{
 		{
 			name:          "valid",
 			schemeBuilder: fluxSourceV1Beta2.SchemeBuilder,
@@ -50,7 +50,7 @@ func TestBuckets(t *testing.T) {
 		},
 	}
 
-	for _, tt := range testCases {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			schema, err := tt.schemeBuilder.Build()
 			require.NoError(t, err)
@@ -60,9 +60,7 @@ func TestBuckets(t *testing.T) {
 
 			resources, err := k.List(context.Background())
 			tt.wantErr(t, err)
-			if err == nil {
-				assert.Equal(t, tt.want, resources)
-			}
+			assert.Equal(t, tt.want, resources)
 		})
 	}
 }

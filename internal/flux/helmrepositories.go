@@ -18,20 +18,20 @@ func HelmRepositories(cfg *rest.Config, logger *slog.Logger) Lister {
 }
 
 func getHelmRepositories(ctx context.Context, c client.Client, opts *client.ListOptions) ([]Resource, int64, string, error) {
-	var fluxResources []Resource
 	var resources fluxSourceV1Beta2.HelmRepositoryList
 
 	if err := c.List(ctx, &resources, opts); err != nil {
 		return nil, 0, "", fmt.Errorf("list: %w", err)
 	}
 
-	for _, resource := range resources.Items {
-		fluxResources = append(fluxResources, newResource(
-			resource.ObjectMeta.GetName(),
-			resource.ObjectMeta.GetNamespace(),
-			resource.TypeMeta.Kind,
-			resource.GetConditions(),
-		))
+	fluxResources := make([]Resource, len(resources.Items))
+	for i := range resources.Items {
+		fluxResources[i] = newResource(
+			resources.Items[i].ObjectMeta.GetName(),
+			resources.Items[i].ObjectMeta.GetNamespace(),
+			resources.Items[i].TypeMeta.Kind,
+			resources.Items[i].GetConditions(),
+		)
 	}
 
 	return fluxResources, getRemaining(&resources), resources.Continue, nil

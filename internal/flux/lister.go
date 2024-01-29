@@ -36,7 +36,7 @@ func (l lister) List(ctx context.Context) ([]Resource, error) {
 			return nil, fmt.Errorf("list: %w", err)
 		}
 
-		l.logger.Debug("custom resources found", "len", len(resources))
+		l.logger.Debug("flux custom resources found", "len", len(resources))
 
 		fluxResources = append(fluxResources, resources...)
 
@@ -44,7 +44,7 @@ func (l lister) List(ctx context.Context) ([]Resource, error) {
 			break
 		}
 
-		l.logger.Debug("more custom resources to be retrieved", "count", remaining)
+		l.logger.Debug("more flux custom resources to be retrieved", "count", remaining)
 		opts.Continue = cont
 	}
 	return fluxResources, nil
