@@ -14,7 +14,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-var debug = flag.Bool("debug", false, "switch on debug logging")
+var (
+	debug = flag.Bool("debug", false, "switch on debug logging")
+	addr  = flag.String("addr", ":9090", "metrics listener port")
+)
 
 func main() {
 	flag.Parse()
@@ -35,7 +38,7 @@ func main() {
 
 	http.Handle("/metrics", promhttp.Handler())
 
-	if err := http.ListenAndServe(":8080", nil); !errors.Is(err, http.ErrServerClosed) {
+	if err := http.ListenAndServe(*addr, nil); !errors.Is(err, http.ErrServerClosed) {
 		panic(err)
 	}
 }
