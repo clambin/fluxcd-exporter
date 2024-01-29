@@ -2,7 +2,7 @@ package flux
 
 import (
 	"context"
-	"github.com/fluxcd/helm-controller/api/v2beta1"
+	"github.com/fluxcd/helm-controller/api/v2beta2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -17,9 +17,9 @@ func TestHelmReleases(t *testing.T) {
 	tests := []testCase{
 		{
 			name:          "valid",
-			schemeBuilder: v2beta1.SchemeBuilder,
+			schemeBuilder: v2beta2.SchemeBuilder,
 			objects: []runtime.Object{
-				&v2beta1.HelmRelease{
+				&v2beta2.HelmRelease{
 					TypeMeta: v1.TypeMeta{
 						Kind:       "HelmRelease",
 						APIVersion: "",
@@ -28,7 +28,7 @@ func TestHelmReleases(t *testing.T) {
 						Name:      "foo",
 						Namespace: "bar",
 					},
-					Status: v2beta1.HelmReleaseStatus{
+					Status: v2beta2.HelmReleaseStatus{
 						Conditions: []v1.Condition{
 							{Type: "Ready", Status: "True"},
 						},
@@ -47,7 +47,7 @@ func TestHelmReleases(t *testing.T) {
 		},
 		{
 			name:          "empty",
-			schemeBuilder: v2beta1.SchemeBuilder,
+			schemeBuilder: v2beta2.SchemeBuilder,
 			wantErr:       assert.NoError,
 			want:          []Resource(nil),
 		},
