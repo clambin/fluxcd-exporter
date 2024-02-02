@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/fluxcd/helm-controller/api v0.37.2
 	github.com/fluxcd/kustomize-controller/api v1.2.1
-	github.com/fluxcd/source-controller/api v1.2.3
+	github.com/fluxcd/source-controller/api v1.2.4
 	github.com/go-logr/logr v1.4.1
 	github.com/prometheus/client_golang v1.18.0
 	github.com/stretchr/testify v1.8.4
@@ -23,7 +23,7 @@ require (
 	github.com/evanphx/json-patch/v5 v5.8.0 // indirect
 	github.com/fluxcd/pkg/apis/acl v0.1.0 // indirect
 	github.com/fluxcd/pkg/apis/kustomize v1.2.0 // indirect
-	github.com/fluxcd/pkg/apis/meta v1.2.0 // indirect
+	github.com/fluxcd/pkg/apis/meta v1.3.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
@@ -46,10 +46,10 @@ require (
 	github.com/prometheus/common v0.45.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/oauth2 v0.12.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
