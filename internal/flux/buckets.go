@@ -10,11 +10,7 @@ import (
 )
 
 func Buckets(cfg *rest.Config, logger *slog.Logger) Lister {
-	return lister{
-		client: makeClient(cfg, fluxSourceV1Beta2.SchemeBuilder),
-		list:   getBuckets,
-		logger: logger.With("custom_resource", "buckets"),
-	}
+	return newLister(cfg, fluxSourceV1Beta2.SchemeBuilder, getBuckets, logger.With("custom_resource", "buckets"))
 }
 
 func getBuckets(ctx context.Context, c client.Client, opts *client.ListOptions) ([]Resource, int64, string, error) {

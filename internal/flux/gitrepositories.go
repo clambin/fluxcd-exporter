@@ -10,11 +10,7 @@ import (
 )
 
 func GitRepositories(cfg *rest.Config, logger *slog.Logger) Lister {
-	return lister{
-		client: makeClient(cfg, fluxSourceV1.SchemeBuilder),
-		list:   getGitRepositories,
-		logger: logger.With("custom_resource", "gitRepositories"),
-	}
+	return newLister(cfg, fluxSourceV1.SchemeBuilder, getGitRepositories, logger.With("custom_resource", "gitRepositories"))
 }
 
 func getGitRepositories(ctx context.Context, c client.Client, opts *client.ListOptions) ([]Resource, int64, string, error) {

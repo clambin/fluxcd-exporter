@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
+	"log/slog"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 	"testing"
 )
@@ -20,16 +21,16 @@ type testCase struct {
 	want          []Resource
 }
 
-func Test_makeClient(t *testing.T) {
+func Test_newLister(t *testing.T) {
 	for _, builder := range []SchemeBuilder{
 		fluxSourceV1Beta2.SchemeBuilder,
 		fluxSourceV1.SchemeBuilder,
 		fluxHelmV2Beta2.SchemeBuilder,
 		fluxKustomizeV1.SchemeBuilder,
 	} {
-		assert.NotNil(t, makeClient(&rest.Config{}, builder))
+		assert.NotNil(t, newLister(&rest.Config{}, builder, nil, slog.Default()))
 		assert.Panics(t, func() {
-			_ = makeClient(nil, builder)
+			_ = newLister(nil, builder, nil, slog.Default())
 		})
 	}
 }

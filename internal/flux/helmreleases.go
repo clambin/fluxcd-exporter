@@ -10,11 +10,7 @@ import (
 )
 
 func HelmReleases(cfg *rest.Config, logger *slog.Logger) Lister {
-	return lister{
-		client: makeClient(cfg, fluxHelmV2Beta2.SchemeBuilder),
-		list:   getHelmReleases,
-		logger: logger.With("custom_resource", "helmReleases"),
-	}
+	return newLister(cfg, fluxHelmV2Beta2.SchemeBuilder, getHelmReleases, logger.With("custom_resource", "helmReleases"))
 }
 
 func getHelmReleases(ctx context.Context, c client.Client, opts *client.ListOptions) ([]Resource, int64, string, error) {

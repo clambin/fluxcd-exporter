@@ -10,11 +10,7 @@ import (
 )
 
 func Kustomizations(cfg *rest.Config, logger *slog.Logger) Lister {
-	return lister{
-		client: makeClient(cfg, fluxKustomizeV1.SchemeBuilder),
-		list:   getKustomizations,
-		logger: logger.With("custom_resource", "kustomizations"),
-	}
+	return newLister(cfg, fluxKustomizeV1.SchemeBuilder, getKustomizations, logger.With("custom_resource", "kustomizations"))
 }
 
 func getKustomizations(ctx context.Context, c client.Client, opts *client.ListOptions) ([]Resource, int64, string, error) {

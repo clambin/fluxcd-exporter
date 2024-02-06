@@ -19,9 +19,11 @@ func (l ListerFunc) List(ctx context.Context) ([]Resource, error) {
 	return l(ctx)
 }
 
+type listFunc func(context.Context, client.Client, *client.ListOptions) ([]Resource, int64, string, error)
+
 type lister struct {
 	client client.Client
-	list   func(context.Context, client.Client, *client.ListOptions) ([]Resource, int64, string, error)
+	list   listFunc
 	logger *slog.Logger
 }
 
@@ -54,7 +56,7 @@ type SchemeBuilder interface {
 	Build() (*runtime.Scheme, error)
 }
 
-func makeClient(cfg *rest.Config, builder SchemeBuilder) client.Client {
+func newLister(cfg *rest.Config, builder SchemeBuilder, listFunc listFunc, logger *slog.Logger) lister {
 	scheme, err := builder.Build()
 	if err != nil {
 		panic(fmt.Errorf("build scheme: %w", err))
@@ -63,7 +65,12 @@ func makeClient(cfg *rest.Config, builder SchemeBuilder) client.Client {
 	if err != nil {
 		panic(fmt.Errorf("new runtime client: %w", err))
 	}
-	return c
+
+	return lister{
+		client: c,
+		list:   listFunc,
+		logger: logger,
+	}
 }
 
 type windowedLister interface {
