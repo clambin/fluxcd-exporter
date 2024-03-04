@@ -8,7 +8,7 @@ require (
 	github.com/fluxcd/source-controller/api v1.2.4
 	github.com/go-logr/logr v1.4.1
 	github.com/prometheus/client_golang v1.19.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	k8s.io/apimachinery v0.29.2
 	k8s.io/client-go v0.29.2
 	sigs.k8s.io/controller-runtime v0.17.2
